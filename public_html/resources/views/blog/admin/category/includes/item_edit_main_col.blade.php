@@ -52,9 +52,7 @@
                             <label for="slug">Описание</label>
                             <textarea name="description"
                                    id="description"
-                                   class="form-control">
-                                {{ $item->description }}
-                            </textarea>
+                                   class="form-control">{{ $item->description }}</textarea>
                         </div>
                     </div>
                 </div>

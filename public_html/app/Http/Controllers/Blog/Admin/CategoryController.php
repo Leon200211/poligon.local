@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
+use App\Http\Requests\BlogCategoryCreateRequest;
+use App\Http\Requests\BlogCategoryUpdateRequest;
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 
@@ -26,18 +28,37 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        //
+        $item = new BlogCategory();
+        $categoryList = BlogCategory::all();
+
+        return view('blog.admin.category.edit', compact('item', 'categoryList'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(BlogCategoryCreateRequest $request)
     {
-        //
+        $data = $request->input();
+
+        if (empty($data['slug'])) {
+            $data['slug'] = str_slug($data['title']);
+        }
+
+        $item = new BlogCategory($data);
+        $item->save();
+
+        if ($item) {
+            return redirect()
+                ->route('admin.blog.categories.edit', $item->id)
+                ->with(['success' => 'Успешно создано']);
+        } else {
+            return back()->withErrors(['msg' => 'Ошибка сохранения'])
+                ->withInput();
+        }
     }
 
     /**
@@ -61,7 +82,7 @@ class CategoryController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(BlogCategoryUpdateRequest $request, $id)
     {
         $item = BlogCategory::find($id);
 
@@ -72,9 +93,10 @@ class CategoryController extends BaseController
         }
 
         $result = $item->fill([
-            'title'     => $request->input('title'),
-            'slug'      => $request->input('slug'),
-            'parent_id' => $request->input('parent_id'),
+            'title'       => $request->input('title'),
+            'slug'        => $request->input('slug'),
+            'description' => $request->input('description'),
+            'parent_id'   => $request->input('parent_id'),
         ])->save();
 
         if ($result) {
