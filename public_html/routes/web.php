@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,4 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(['prefix' => 'blog'], function () {
+    Route::resource('posts', \App\Http\Controllers\Blog\PostController::class)->names('blog.posts');
+});
+
 Route::resource('rest',\App\Http\Controllers\RestTestController::class)->names('restTest');
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
