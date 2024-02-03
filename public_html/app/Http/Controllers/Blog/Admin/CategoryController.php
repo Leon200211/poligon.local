@@ -44,7 +44,7 @@ class CategoryController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
@@ -59,10 +59,32 @@ class CategoryController extends BaseController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $item = BlogCategory::find($id);
+
+        if (empty($item)) {
+            return back()
+                ->writhErrors(['msg' => "Запись id=[{$id}] не найдена"])
+                ->withInput();
+        }
+
+        $result = $item->fill([
+            'title'     => $request->input('title'),
+            'slug'      => $request->input('slug'),
+            'parent_id' => $request->input('parent_id'),
+        ])->save();
+
+        if ($result) {
+            return redirect()
+                ->route('admin.blog.categories.edit', $item->id)
+                ->with(['success' => 'Успешно сохранено']);
+        } else {
+            return back()
+                ->writhErrors(['msg' => 'Ошибка сохранения'])
+                ->withInput();
+        }
     }
 }

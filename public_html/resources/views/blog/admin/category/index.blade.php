@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-                    <a class="btn btn-primary" href="{{ route('blog.admin.categories.create') }}"></a>
+                    <a class="btn btn-primary" href="{{ route('admin.blog.categories.create') }}"></a>
                 </nav>
                 <div class="card">
                     <div class="table table-hover">
@@ -23,7 +23,7 @@
                                     <tr>
                                         <td>{{ $item->id }}</td>
                                         <td>
-                                            <a href="{{ route('blog.admin.categories.edit', $item->id) }}">
+                                            <a href="{{ route('admin.blog.categories.edit', $item->id) }}">
                                                 {{ $item->title }}
                                             </a>
                                         </td>
