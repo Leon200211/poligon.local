@@ -19,14 +19,14 @@ class BlogCategoryRepository extends CoreRepository
         return $this->startConditions()->find($id);
     }
 
-    public function getAllWithPaginate($petPage = null)
+    public function getAllWithPaginate($perPage = null)
     {
         $columns = ['id', 'title', 'parent_id'];
 
         $result = $this
             ->startConditions()
             ->select($columns)
-            ->paginate($petPage)
+            ->paginate($perPage)
         ;
 
         return $result;
