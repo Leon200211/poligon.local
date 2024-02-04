@@ -30,8 +30,8 @@
                                 @foreach($paginator as $post)
                                     <tr @if(!$post->is_published) style="background-color: #ccc;" @endif>
                                         <td>{{ $post->id }}</td>
-                                        <td>{{ $post->user_id }}</td>
-                                        <td>{{ $post->category_id }}</td>
+                                        <td>{{ $post->user->name }}</td>
+                                        <td>{{ $post->category->title }}</td>
                                         <td>
                                             <a href="{{ route('admin.blog.posts.edit', $post->id) }}">{{ $post->title }}</a>
                                         </td>

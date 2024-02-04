@@ -10,4 +10,14 @@ class BlogPost extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
