@@ -5,10 +5,19 @@ namespace App\Http\Controllers\Blog\Admin;
 use App\Http\Requests\BlogCategoryCreateRequest;
 use App\Http\Requests\BlogCategoryUpdateRequest;
 use App\Models\BlogCategory;
+use App\Repositories\BlogCategoryRepository;
 use Illuminate\Http\Request;
 
 class CategoryController extends BaseController
 {
+    private $blogCategoryRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->blogCategoryRepository = app(BlogCategoryRepository::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +25,7 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $paginator = BlogCategory::paginate(5);
+        $paginator = $this->blogCategoryRepository->getAllWithPaginate(5);
 
         return view('blog.admin.category.index', compact('paginator'));
     }
@@ -29,7 +38,7 @@ class CategoryController extends BaseController
     public function create()
     {
         $item = new BlogCategory();
-        $categoryList = BlogCategory::all();
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
 
         return view('blog.admin.category.edit', compact('item', 'categoryList'));
     }
@@ -69,8 +78,13 @@ class CategoryController extends BaseController
      */
     public function edit($id)
     {
-        $item = BlogCategory::findOrFail($id);
-        $categoryList = BlogCategory::all();
+        $item = $this->blogCategoryRepository->getEdit($id);
+
+        if (empty($item)) {
+            abort(404);
+        }
+
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
 
         return view('blog.admin.category.edit', compact('item', 'categoryList'));
     }
@@ -84,7 +98,7 @@ class CategoryController extends BaseController
      */
     public function update(BlogCategoryUpdateRequest $request, $id)
     {
-        $item = BlogCategory::find($id);
+        $item = $this->blogCategoryRepository->getEdit($id);
 
         if (empty($item)) {
             return back()
