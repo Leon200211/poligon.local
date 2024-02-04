@@ -34,9 +34,9 @@
                                    required>
                         </div>
                         <div class="form-group">
-                            <label for="slug">Статья</label>
-                            <textarea name="description"
-                                   id="description"
+                            <label for="content">Статья</label>
+                            <textarea name="content_raw"
+                                   id="content_raw"
                                    class="form-control"
                                    rows="20">{{ $item->content_raw }}</textarea>
                         </div>
