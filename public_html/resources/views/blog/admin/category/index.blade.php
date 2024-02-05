@@ -28,7 +28,7 @@
                                             </a>
                                         </td>
                                         <td @if(in_array($item->parent_id, [0, 1])) style="" @endif>
-                                            {{ $item->parent_id }}
+                                            {{ $item->parent_title }}
                                         </td>
                                     </tr>
                                 @endforeach
