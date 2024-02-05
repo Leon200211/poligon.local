@@ -26,7 +26,7 @@
                         <div class="form-group">
                             <label for="title">Заголовок</label>
                             <input name="title"
-                                   value="{{ $item->title }}"
+                                   value="{{ old('title', $item->title) }}"
                                    id="title"
                                    type="text"
                                    class="form-control"

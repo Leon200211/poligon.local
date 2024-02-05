@@ -53,10 +53,6 @@ class CategoryController extends BaseController
     {
         $data = $request->input();
 
-        if (empty($data['slug'])) {
-            $data['slug'] = str_slug($data['title']);
-        }
-
         $item = new BlogCategory($data);
         $item->save();
 
